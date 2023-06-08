@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\user\AppintmentRequest;
+use App\Models\AboutUs;
 use App\Models\Appointment;
 use App\Models\AppointmentReport;
+use App\Models\Article;
 use App\Models\ChatLog;
 use App\Models\Doctor;
 use App\Models\Speciality;
@@ -16,6 +19,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Storage;
 
 class MainUserController extends Controller
 {
@@ -87,8 +91,29 @@ class MainUserController extends Controller
     public function showHome()
     {
         $doctors = User::query()->userType('doctor')->orderByDesc('created_at')->get();
+        $aboutUs = AboutUs::query()->first();
 
-        return view('patient.home', compact('doctors'));
+        return view('patient.home', compact('doctors', 'aboutUs'));
+    }
+    public function showAbout()
+    {
+        $doctors = User::query()->userType('doctor')->orderByDesc('created_at')->get();
+        $aboutUs = AboutUs::query()->first();
+
+        return view('patient.about', compact('doctors', 'aboutUs'));
+    }
+    public function showBlog()
+    {
+        $articles = Article::query()->orderByDesc('created_at')->get();
+
+        return view('patient.blog', compact('articles'));
+    }
+    public function showBlogData($id)
+    {
+        $article = Article::query()->findOrFail($id);
+
+
+        return view('patient.blog-details', compact('article'));
     }
     public function showDoctors($speciality = null)
     {
@@ -129,12 +154,13 @@ class MainUserController extends Controller
 
         return view('patient.doctor-details', compact('doctor'));
     }
-    public function storeAppointment(Request $request)
+    public function storeAppointment(AppintmentRequest $request)
     {
         try {
             DB::beginTransaction();
             $data = $request->all();
             $data['user_id'] = Auth::id();
+            $data['type'] = 'voice';
 
             $appointment = Appointment::query()->create($data);
             if ($appointment) {
@@ -149,6 +175,46 @@ class MainUserController extends Controller
                 ->withInput($request->all());
         }
     }
+    public function showVideoAppointment($id = null)
+    {
+        try {
+
+            if ($id) {
+                $doctor = true;
+                $doctors = Doctor::query()->findOrFail($id);
+            } else {
+                $doctor = false;
+                $doctors = Doctor::query()->orderByDesc('created_at')->get();
+            }
+            $specialities = Speciality::query()->orderByDesc('created_at')->get();
+
+            return view('patient.appiontmentVideo', compact('doctor', 'doctors', 'specialities'));
+        } catch (\Exception $exception) {
+            return redirect()->back()->with('error', $exception->getMessage());
+        }
+    }
+    public function storeVideoAppointment(AppintmentRequest $request)
+    {
+        try {
+            DB::beginTransaction();
+            $data = $request->all();
+            $data['user_id'] = Auth::id();
+            $data['type'] = 'video';
+
+            $appointment = Appointment::query()->create($data);
+            if ($appointment) {
+                DB::commit();
+                return redirect()->route('user.appoinment.view')->with('success', __('message.Done Save Data Successfully'));
+            }
+            return redirect()->back()->with('warning', __('message.Some failed errors'));
+        } catch (\Exception $exception) {
+            DB::rollBack();
+            dd($exception->getMessage());
+            return redirect()->back()->with('error', $exception->getMessage())
+                ->withInput($request->all());
+        }
+    }
+
     public function UserAppointments()
     {
         try {
@@ -232,8 +298,14 @@ class MainUserController extends Controller
         try {
             DB::beginTransaction();
             $data = $request->all();
-
-            $message = ChatLog::query()->create($data);
+            $files = [];
+            if ($request->hasFile('image')) {
+                $file = $data['image'];
+                $filename = time() . $file->getClientOriginalName();
+                $path = $request->image->storeAs('images', $filename);
+                $files['attach'] = $path;
+            }
+            $message = ChatLog::query()->create(array_merge($data,$files));
             if ($message) {
                 DB::commit();
                 return redirect()->back()->with('success', __('message.Done Save Data Successfully'));
@@ -246,4 +318,5 @@ class MainUserController extends Controller
                 ->withInput($request->all());
         }
     }
+    
 }

@@ -35,7 +35,7 @@
                                 <span>{{ $user->doctor->doctor_info }}</span>
                             </div>
                              <div class="form-group">
-                                <label><strong>working hours : </strong></label>
+                                <label><strong>voice working hours : </strong></label>
                                 
                                 @foreach ($user->doctor->workingHours as $workingHour )
                                 <br>
@@ -44,6 +44,18 @@
                                 <span> {{ $workingHour->from }}</span>
                                 <span>to {{ $workingHour->to }}</span>
                                     
+                                @endforeach
+                            </div>
+                            <div class="form-group">
+                                <label><strong>video working hours : </strong></label>
+
+                                @foreach ($user->doctor->workingHoursVideo as $workingHour )
+                                    <br>
+
+                                    <span> {{ $workingHour->day }}</span>
+                                    <span> {{ $workingHour->from }}</span>
+                                    <span>to {{ $workingHour->to }}</span>
+
                                 @endforeach
                             </div>
                         </div>

@@ -76,9 +76,17 @@
                             {{ $doctor->doctor_info }}
                         </p>
 
-                        <h5>Working Hours</h5>
+                        <h5>Voice Appointment Working Hours</h5>
                         <ul class="doctors-details-list">
                             @foreach ($doctor->workingHours as $availability)
+                                <li><strong>{{ $availability->day }}</strong> : {{ $availability->from }} -
+                                    {{ $availability->to }}</li>
+                            @endforeach
+
+                        </ul>
+                        <h5>Video Appointment Working Hours</h5>
+                        <ul class="doctors-details-list">
+                            @foreach ($doctor->workingHoursVideo as $availability)
                                 <li><strong>{{ $availability->day }}</strong> : {{ $availability->from }} -
                                     {{ $availability->to }}</li>
                             @endforeach
@@ -108,9 +116,16 @@
 
                                     <div class="col-lg-12 col-md-12">
                                         <a href="{{ route('patient.doctor.appointoment',['id'=>$doctor->id]) }}" type="submit" class="default-btn">
-                                            Book An Appointment
+                                            Book An Voice Call Appointment
                                         </a>
                                     </div>
+
+                                    <div class="col-lg-12 col-md-12">
+                                        <a href="{{ route('patient.doctor.video.appointoment',['id'=>$doctor->id]) }}" type="submit" class="default-btn">
+                                            Book An Video Call Appointment
+                                        </a>
+                                    </div>
+
                                     <div class="col-lg-12 col-md-12">
                                         <a href="{{ route('patient.chat.index',['id'=>$doctor->user->id]) }}" type="submit" class="default-btn">
                                             Chat With Doctor

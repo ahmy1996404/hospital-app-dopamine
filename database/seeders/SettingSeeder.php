@@ -22,5 +22,17 @@ class SettingSeeder extends Seeder
             'name' => 'logo',
             'value' => 'patient/assets/img/logo3.png',
         ]);
+        DB::table('settings')->insert([
+            'name' => 'address',
+            'value' => '123 William St Suite 801, New York, USA',
+        ]);
+        DB::table('settings')->insert([
+            'name' => 'phone',
+            'value' => '+001-548-159-2491',
+        ]);
+        DB::table('settings')->insert([
+            'name' => 'email',
+            'value' => 'hello@medizo.com',
+        ]);
     }
 }

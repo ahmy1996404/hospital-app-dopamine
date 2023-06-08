@@ -20,7 +20,6 @@ class SettingController extends Controller
             $data = Setting::query()->orderByDesc('created_at');
 
             $data = $data->get();
-
             return view('admin.setting.index', compact('data'));
         } catch (\Exception $exception) {
             return redirect()->back()->with('error', $exception->getMessage());

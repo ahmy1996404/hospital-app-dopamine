@@ -16,6 +16,8 @@
                                 <th>doctor name</th>
                                 <th>user name</th>
                                 <th>date</th>
+                                <th>time</th>
+                                <th>type</th>
                                 <th>status</th>
                                 <th>created</th>
                             </tr>
@@ -28,6 +30,8 @@
                                     <td>{{ $row->doctor->user->name }}</td>
                                     <td>{{ $row->user->name }}</td>
                                     <td>{{ $row->date }}</td>
+                                    <td>{{ $row->time }}</td>
+                                    <td>{{ $row->type }}</td>
                                     <td>{{ $row->status }}</td>
                                     <td>{{ $row->created_at->diffForHumans() }}</td>
                                     
@@ -40,6 +44,8 @@
                                 <th>doctor name</th>
                                 <th>user name</th>
                                 <th>date</th>
+                                <th>time</th>
+                                <th>type</th>
                                 <th>status</th>
                                 <th>created</th>
                             </tr>

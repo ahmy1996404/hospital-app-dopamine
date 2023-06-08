@@ -35,15 +35,25 @@
                 <div class="col-lg-12">
                     <div class="appointment-widget-form">
                         <div class="appointment-from">
-                            <h2>Get Your Appointment</h2>
+                            <h2>Get Your Voice Appointment</h2>
                             <p>Online Easily During This Corona Pandemic</p>
                             {!! Form::open(['route' => 'patient.appointment.store', 'files' => true, 'method' => 'post']) !!}
                             @if (!$doctor)
                                 <div class="row">
-
                                     <div class="col-lg-12 col-sm-12">
                                         <div class="form-group">
-                                            {!! Form::label('speciality_id', 'Speciality', ['class' => 'form-label']) !!}
+                                            <label  class="form-label">Speciality</label>
+                                            <select class="form-control" disabled>
+                                                <option  selected>
+                                                    Psychiatric specialization
+                                                </option>
+
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-12 col-sm-12">
+                                        <div class="form-group">
+                                            {!! Form::label('speciality_id', 'Sub Speciality', ['class' => 'form-label']) !!}
 
                                             <select class="form-control" id="speciality_id_dd" name="speciality_id">
                                                 <option value="">Select speciality</option>
@@ -59,10 +69,13 @@
                                         <div class="form-group">
                                             {!! Form::label('doctor_id', 'Doctor', ['class' => 'form-label']) !!}
 
-                                            <select id="doctor_id_dd" name="doctor_id" class="form-control">
+                                            <select id="doctor_id_dd" name="doctor_id" class="form-control  @error('doctor_id') is-invalid @enderror"">
                                                 <option value="">Select Doctor</option>
 
                                             </select>
+                                            @error('doctor_id')
+                                                <span id="code-error" class="error invalid-feedback">{{ $message }}</span>
+                                            @enderror
                                         </div>
                                     </div>
 
@@ -71,11 +84,14 @@
                                             <div class="input-group date" id="">
                                                 {!! Form::label('date', 'date', ['class' => 'form-label']) !!}
 
-                                                <select id="avail-dd" class="form-control" name="date">
+                                                <select id="avail-dd" class="form-control  @error('date') is-invalid @enderror"" name="date">
                                                     <option value="">Select time</option>
 
                                                 </select>
-
+                                                @error('date')
+                                                    <span id="code-error"
+                                                        class="error invalid-feedback">{{ $message }}</span>
+                                                @enderror
                                             </div>
                                         </div>
                                     </div>
@@ -89,10 +105,20 @@
                             @endif
                             @if ($doctor)
                                 <div class="row">
-
                                     <div class="col-lg-12 col-sm-12">
                                         <div class="form-group">
-                                            {!! Form::label('speciality_id', 'Speciality', ['class' => 'form-label']) !!}
+                                            <label  class="form-label">Speciality</label>
+                                            <select class="form-control" disabled>
+                                                <option  selected>
+                                                    Psychiatric specialization
+                                                </option>
+
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-12 col-sm-12">
+                                        <div class="form-group">
+                                            {!! Form::label('speciality_id', 'Sub Speciality', ['class' => 'form-label']) !!}
 
                                             <select class="form-control" id="speciality_id_dd" name="speciality_id">
                                                 <option value="{{ $doctors->speciality->id }}" selected>
@@ -117,16 +143,29 @@
                                     <div class="col-lg-12 col-sm-12">
                                         <div class="form-group">
                                             <div class="input-group date" id="">
-                                                {!! Form::label('date', 'date', ['class' => 'form-label']) !!}
+                                                {!! Form::label('date', 'Date', ['class' => 'form-label']) !!}
 
                                                 <select id="avail-dd" class="form-control" name="date">
-                                                    <option selected value="">Select time</option>
+                                                    <option selected value="">Select date</option>
                                                     @foreach ($doctors->workingHours as $available)
                                                         {{ $date = Carbon\Carbon::parse('this ' . $available->day)->toDateString() }}
-                                                        <option value="{{ $date }}" >
-                                                            {{ $available->day . ' ' .$date }} 
+                                                        <option value="{{ $date }}">
+                                                            {{ $available->day . ' ' . $date }}
                                                         </option>
                                                     @endforeach
+                                                </select>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-lg-12 col-sm-12">
+                                        <div class="form-group">
+                                            <div class="input-group date" id="">
+                                                {!! Form::label('time', 'Time', ['class' => 'form-label']) !!}
+
+                                                <select id="avail-tt" class="form-control" name="time">
+                                                    <option selected value="">Select time</option>
                                                 </select>
 
                                             </div>
@@ -138,8 +177,9 @@
                                             Book An Appointment
                                         </button>
                                     </div>
-                                     <div class="col-lg-12 col-md-12">
-                                        <a href="{{ route('patient.doctors') }}" type="submit" class="default-btn" style="text-align: center">
+                                    <div class="col-lg-12 col-md-12">
+                                        <a href="{{ route('patient.doctors') }}" type="submit" class="default-btn"
+                                            style="text-align: center">
                                             Choose another doctor
                                         </a>
                                     </div>
@@ -214,6 +254,35 @@
 
                             $("#avail-dd").append('<option value="' + value + '">' +
                                 value + ' ' + days[d.getDay()] + '</option>');
+                        });
+                    }
+                });
+            });
+            $('#avail-dd').on('change', function() {
+                var idDoctor = $('#doctor_id_dd').find(":selected").val();
+                console.log(idDoctor)
+                var dateDoctor = this.value;
+                $("#avail-tt").html('');
+                $.ajax({
+
+                    url: "{{ url('api/doctor/time') }}",
+                    type: "POST",
+                    data: {
+                        doctor_id: idDoctor,
+                        date: dateDoctor,
+                        _token: '{{ csrf_token() }}'
+                    },
+                    dataType: 'json',
+                    success: function(result) {
+                        console.log(result)
+                        $('#avail-tt').html(
+                            '<option value="">Select appointment time</option>');
+
+
+                        $.each(result, function(key, value) {
+
+                            $("#avail-tt").append('<option value="' + value + '">' +
+                                value +  '</option>');
                         });
                     }
                 });

@@ -57,8 +57,14 @@ class ChatController extends Controller
         try {
             DB::beginTransaction();
             $data = $request->all();
-
-            $message = ChatLog::query()->create($data);
+            $files = [];
+            if ($request->hasFile('image')) {
+                $file = $data['image'];
+                $filename = time() . $file->getClientOriginalName();
+                $path = $request->image->storeAs('images', $filename);
+                $files['attach'] = $path;
+            }
+            $message = ChatLog::query()->create(array_merge($data,$files));
             if ($message) {
                 DB::commit();
                 return redirect()->back()->with('success', __('message.Done Save Data Successfully'));

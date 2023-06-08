@@ -1,8 +1,13 @@
 <?php
 
+use App\Http\Controllers\admin\AboutUsController;
 use App\Http\Controllers\admin\AppointmentController;
+use App\Http\Controllers\admin\ArticleCategoryController;
+use App\Http\Controllers\admin\ArticleController;
+use App\Http\Controllers\admin\ContactMessageController;
 use App\Http\Controllers\admin\DoctorController;
 use App\Http\Controllers\admin\PatientController;
+use App\Http\Controllers\admin\ServiceController;
 use App\Http\Controllers\admin\SettingController;
 use App\Http\Controllers\admin\SpecialityController;
 use App\Http\Controllers\AdminController;
@@ -11,6 +16,7 @@ use App\Http\Controllers\doctor\AppointmentController as DoctorAppointmentContro
 use App\Http\Controllers\doctor\ChatController;
 use App\Http\Controllers\doctor\DoctorDashboardController;
 use App\Http\Controllers\MainUserController;
+use App\Http\Controllers\patient\ContactController;
 use App\Http\Controllers\patient\DoctorController as PatientDoctorController;
 use Illuminate\Support\Facades\Route;
 
@@ -44,6 +50,13 @@ Route::group(
         Route::resource('speciality', SpecialityController::class);
         Route::resource('appointment', AppointmentController::class);
         Route::resource('setting', SettingController::class);
+        Route::resource('service', ServiceController::class);
+        Route::resource('contact', ContactMessageController::class);
+        Route::resource('article', ArticleController::class);
+        Route::resource('articleCategory', ArticleCategoryController::class);
+
+        Route::get('/about-us/edit', [AboutUsController::class, 'edit'])->name('aboutUs.edit');
+        Route::put('/about-us/update', [AboutUsController::class, 'update'])->name('aboutUs.update');
 
     }
 );
@@ -75,6 +88,13 @@ Route::middleware(['auth:sanctum,web', 'verified', 'is_doctor'])->get('/dashboar
  * Patient Routes
  */
 Route::get('/', [MainUserController::class, 'showHome'])->name('patient.home');
+Route::get('/about', [MainUserController::class, 'showAbout'])->name('patient.about');
+Route::get('/contact', [ContactController::class, 'showContact'])->name('patient.contact');
+Route::get('/blog', [MainUserController::class, 'showBlog'])->name('patient.blog.index');
+Route::get('/blog/details/{id}', [MainUserController::class, 'showBlogData'])->name('patient.blog.details');
+
+Route::post('/contact/store', [ContactController::class, 'storeMessage'])->name('patient.contact.message.store');
+
 Route::get('/doctors/{speciality?}', [MainUserController::class, 'showDoctors'])->name('patient.doctors');
 Route::get('/doctor/details/{id}', [MainUserController::class, 'showDoctorData'])->name('patient.doctor.details');
 
@@ -95,6 +115,8 @@ Route::middleware(['auth:sanctum,web', 'verified'])->group(
 
                 Route::get('/appointment/{id?}', [MainUserController::class, 'showAppointment'])->name('patient.doctor.appointoment');
                 Route::post('/appointment/store', [MainUserController::class, 'storeAppointment'])->name('patient.appointment.store');
+                Route::get('/appointment/video/{id?}', [MainUserController::class, 'showVideoAppointment'])->name('patient.doctor.video.appointoment');
+                Route::post('/appointment/video/store', [MainUserController::class, 'storeVideoAppointment'])->name('patient.video.appointment.store');
                 Route::get('/user/chat/{id?}', [MainUserController::class, 'showChat'])->name('patient.chat.index');
                 Route::post('/chat/store', [MainUserController::class, 'sendMessage'])->name('patient.chat.store');
 
@@ -104,6 +126,9 @@ Route::middleware(['auth:sanctum,web', 'verified'])->group(
 );
 Route::get('/user/logout', [MainUserController::class, 'Logout'])->name('user.logout');
 
+Route::post('api/doctor/time', [PatientDoctorController::class, 'getDoctorAvailabilityHours']);
 Route::post('api/doctor/working-hours', [PatientDoctorController::class, 'getDoctorAvailability']);
+Route::post('api/doctor/video-time', [PatientDoctorController::class, 'getDoctorVideoAvailabilityHours']);
+Route::post('api/doctor/video-working-hours', [PatientDoctorController::class, 'getDoctorVideoAvailability']);
 Route::post('api/doctor/doctors', [PatientDoctorController::class, 'getSpecialityDoctors']);
 Route::post('/password/update', [ChangePassController::class, 'UpdatePassword'])->name('password.update');

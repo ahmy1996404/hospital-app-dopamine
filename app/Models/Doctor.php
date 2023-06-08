@@ -36,6 +36,10 @@ class Doctor extends Model
     {
         return $this->hasMany(DoctorWorkingHours::class);
     }
+    public function workingHoursVideo()
+    {
+        return $this->hasMany(DoctorWorkingHoursVideo::class);
+    }
     public function doctorAppointments()
     {
         return $this->hasMany(Appointment::class, 'doctor_id');

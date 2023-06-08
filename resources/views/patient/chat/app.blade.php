@@ -101,7 +101,7 @@
                     </div>
 
                     <div class="options">
-                        <button class="info">&bull;&bull;&bull;</button>
+                        <p><label for="file" style="padding-top: 10px; font-size:10px;cursor: pointer;"> Attach Image</label></p>
                     </div>
                 @endif
             </div>
@@ -116,13 +116,28 @@
 
                             @foreach ($chat as $message)
                                 @if ($message->sender_id == Auth::id())
+                                    @if($message->has_content)
                                     <div class="clip sent">
-                                        <div class="text">{{ $message->message }}</div>
+                                        @if($message->has_attach)
+                                            <a href="{{$message->attach_url}}" target="_blank"> <img width="200" src="{{$message->attach_url}}"> </a>
+                                        @endif
+                                        @if($message->has_message)
+                                                <div class="text">{{ $message->message }}</div>
+                                        @endif
                                     </div>
+                                    @endif
+
                                 @else
-                                    <div class="clip received">
-                                        <div class="text">{{ $message->message }}</div>
-                                    </div>
+                                    @if($message->has_content)
+                                        <div class="clip received">
+                                            @if($message->has_attach)
+                                               <a href="{{$message->attach_url}}" target="_blank"><img width="200" src="{{$message->attach_url}}"></a>
+                                            @endif
+                                            @if($message->has_message)
+                                                <div class="text">{{ $message->message }}</div>
+                                            @endif
+                                        </div>
+                                    @endif
                                 @endif
                             @endforeach
                         </div>
@@ -133,13 +148,19 @@
                 </div>
 
                 <div class="bottom">
-                    {!! Form::open(['route' => ['patient.chat.store' ],    'method' => 'post']) !!}
+                    {!! Form::open(['route' => ['patient.chat.store' ],    'method' => 'post' ,'files' => true]) !!}
                     {!! Form::hidden('sender_id', Auth::id()) !!}
                     {!! Form::hidden('receiver_id', $chatWith->id )!!}
 
                     <div class="cup">
-                        <textarea id="message" name="message" cols="30" rows="1" placeholder="Message..." required></textarea>
+                        <div class="attach-image">
+                            <p id="removeFile" style="cursor: pointer; position:absolute;display: none" onclick="unLoadFile(event)">x</p>
+                            <p><img id="output" style="display: none" width="200" /></p>
+                        </div>
+
+                        <textarea id="message" name="message" cols="30" rows="1" placeholder="Message..." ></textarea>
                         {!! Form::submit(  'Send', ['class' => 'send']) !!}
+                        <p><input type="file"  accept="image/*" name="image" id="file"  onchange="loadFile(event)" style="display: none;"></p>
 
                     </div>
                     {!! Form::close() !!}
@@ -152,5 +173,21 @@
 
 
     </div>
+    <script>
+        var loadFile = function(event) {
+            var image = document.getElementById('output');
+            image.style = 'display:block;';
+            image.src = URL.createObjectURL(event.target.files[0]);
+            document.getElementById("removeFile").style = 'display:block;cursor: pointer; position:absolute;';
 
+        };
+        var unLoadFile = function(event) {
+            var image = document.getElementById('output');
+            image.style = 'display:none;';
+            image.src = '';
+            document.getElementById("file").value = "";
+            document.getElementById("removeFile").style = 'display:none;';
+
+        };
+    </script>
 @endsection

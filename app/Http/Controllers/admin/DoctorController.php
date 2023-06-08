@@ -4,12 +4,12 @@ namespace App\Http\Controllers\admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\admin\DoctorRequest;
+use App\Models\DoctorWorkingHoursVideo;
 use App\Models\User;
 use Dflydev\DotAccessData\Data;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
-use App\Interfaces\UploadFile\UploadFileRepositoryInterface;
 use App\Models\Doctor;
 use App\Models\DoctorWorkingHours;
 use App\Models\Speciality;
@@ -17,20 +17,7 @@ use PhpParser\Node\Stmt\Do_;
 
 class DoctorController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    /**
-     * @var UploadFileRepositoryInterface
-     */
-    private $uploadFileRepositoryInterface;
-
-    public function __construct(UploadFileRepositoryInterface $uploadFileRepositoryInterface)
-    {
-        $this->uploadFileRepositoryInterface = $uploadFileRepositoryInterface;
-    }
+    
 
     public function index()
     {
@@ -102,7 +89,20 @@ class DoctorController extends Controller
             foreach ($availabilityData as $val) {
                 $workingHours = DoctorWorkingHours::query()->create($val);
             }
-            if ($user && $doctor && $workingHours) {
+
+            $i = 0;
+            foreach ($request['videoDays'] as $val) {
+                $availabilityVideoData[$i]['day'] = $request['videoDays'][$i];
+                $availabilityVideoData[$i]['from'] = $request['videoFrom'][$i];
+                $availabilityVideoData[$i]['to'] = $request['videoTo'][$i];
+                $availabilityVideoData[$i]['doctor_id'] = $doctor->id;
+
+                $i++;
+            }
+            foreach ($availabilityVideoData as $val) {
+                $videoWorkingHours = DoctorWorkingHoursVideo::query()->create($val);
+            }
+            if ($user && $doctor && $workingHours && $videoWorkingHours) {
                 DB::commit();
                 return redirect()->route('admin.doctor.index')->with('success', __('message.Done Save Data Successfully'));
             }
@@ -153,7 +153,13 @@ class DoctorController extends Controller
 
                 array_push($days, $Availabily->day);
             }
-            return view('admin.doctor.form', compact('edit', 'user', 'specialities', 'doctor', 'Availability', 'days'));
+            $videoAvailability = DoctorWorkingHoursVideo::where('doctor_id', $doctor->id)->get();
+            $videoDays = array();
+            foreach ($videoAvailability as $Availabily) {
+
+                array_push($videoDays, $Availabily->day);
+            }
+            return view('admin.doctor.form', compact('edit', 'user', 'specialities', 'doctor', 'Availability','videoAvailability', 'days','videoDays'));
         } catch (\Exception $exception) {
             return redirect()->back()->with('error', $exception->getMessage());
         }
@@ -200,7 +206,24 @@ class DoctorController extends Controller
             foreach ($availabilityData as $val) {
                 $avail = DoctorWorkingHours::create($val);
             }
-            if ($user->update($data) && $doctor->update($doctorData) && $avail) {
+
+            $videoAvailability = DoctorWorkingHoursVideo::where('doctor_id', $doctor->id)->get();
+            foreach ($videoAvailability as $vidoeAvailabil) {
+                $vidoeAvailabil->delete();
+            }
+            $i = 0;
+            foreach ($request['videoDays'] as $val) {
+                $videoAvailabilityData[$i]['day'] = $request['videoDays'][$i];
+                $videoAvailabilityData[$i]['from'] = $request['videoFrom'][$i];
+                $videoAvailabilityData[$i]['to'] = $request['videoTo'][$i];
+                $videoAvailabilityData[$i]['doctor_id'] = $doctor->id;
+                $i++;
+            }
+            foreach ($videoAvailabilityData as $val) {
+                $videoAvail = DoctorWorkingHoursVideo::create($val);
+            }
+
+            if ($user->update($data) && $doctor->update($doctorData) && $avail && $videoAvail) {
                 DB::commit();
                 return redirect()->route('admin.doctor.index')->with('success', __('message.Done Updated Data Successfully'));
             }

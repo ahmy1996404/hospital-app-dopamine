@@ -120,6 +120,8 @@
                                     </div>
 
                                 </div>
+                                {{--                            voice working--}}
+                                <label>Voice Working hours</label>
                                 <div class="form-group">
                                     <div class="row">
 
@@ -249,7 +251,141 @@
                                     </div>
 
                                 </div>
+
+                                {{--                            video working--}}
+                                <label>Video Working hours</label>
+                                <div class="form-group">
+                                    <div class="row">
+
+                                        <div class="col-3">
+                                            <label class="switch">
+
+                                                <input id="sunday" value="sunday" class="video-day-checkbox" type="checkbox"
+                                                       name="videoDays[]">
+                                                <span class="slider round"></span>
+                                            </label>
+                                            Sunday
+                                        </div>
+                                        <div class="col-6">
+
+                                            <input type="time" id="sundayVideoFrom" name="videoFrom[]" required disabled>
+                                            <input type="time" id="sundayVideoTo" name="videoTo[]" required disabled>
+                                        </div>
+
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-3">
+
+                                            <label class="switch">
+
+                                                <input id="monday" value="monday" class="video-day-checkbox" type="checkbox"
+                                                       name="videoDays[]">
+                                                <span class="slider round"></span>
+                                            </label>
+                                            Monday
+                                        </div>
+                                        <div class="col-6">
+
+                                            <input type="time" id="mondayVideoFrom" name="videoFrom[]" required disabled>
+                                            <input type="time" id="mondayVideoTo" name="videoTo[]" required disabled>
+                                        </div>
+
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-3">
+
+                                            <label class="switch" class="row">
+
+                                                <input id="tuesday" value="tuesday" class="video-day-checkbox" type="checkbox"
+                                                       name="videoDays[]">
+                                                <span class="slider round"></span>
+                                            </label>
+
+                                            Tuesday
+                                        </div>
+                                        <div class="col-6">
+
+                                            <input type="time" id="tuesdayVideoFrom" name="videoFrom[]" required disabled>
+                                            <input type="time" id="tuesdayVideoTo" name="videoTo[]" required disabled>
+                                        </div>
+
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-3">
+
+                                            <label class="switch">
+
+                                                <input id="wednesday" value="wednesday" class="video-day-checkbox"
+                                                       type="checkbox" name="videoDays[]">
+                                                <span class="slider round"></span>
+                                            </label>
+                                            Wednesday
+                                        </div>
+                                        <div class="col-6">
+
+                                            <input type="time" id="wednesdayVideoFrom" name="videoFrom[]" required disabled>
+                                            <input type="time" id="wednesdayVideoTo" name="videoTo[]" required disabled>
+                                        </div>
+
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-3">
+
+                                            <label class="switch">
+
+                                                <input id="thursday" value="thursday" class="video-day-checkbox" type="checkbox"
+                                                       name="videoDays[]">
+                                                <span class="slider round"></span>
+                                            </label>
+                                            Thursday
+                                        </div>
+                                        <div class="col-6">
+                                            <input type="time" id="thursdayVideoFrom" name="videoFrom[]" required disabled>
+                                            <input type="time" id="thursdayVideoTo" name="videoTo[]" required disabled>
+                                        </div>
+
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-3">
+
+                                            <label class="switch">
+
+                                                <input id="friday" value="friday" class="video-day-checkbox" type="checkbox"
+                                                       name="videoDays[]">
+                                                <span class="slider round"></span>
+                                            </label>
+                                            Friday
+                                        </div>
+                                        <div class="col-6">
+
+                                            <input type="time" id="fridayVideoFrom" name="videoFrom[]" required disabled>
+                                            <input type="time" id="fridayVideoTo" name="videoTo[]" required disabled>
+                                        </div>
+
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-3">
+
+                                            <label class="switch">
+
+                                                <input id="saturday" value="saturday" class="video-day-checkbox" type="checkbox"
+                                                       name="videoDays[]">
+                                                <span class="slider round"></span>
+                                            </label>
+                                            Saturday
+                                        </div>
+                                        <div class="col-6">
+
+                                            <input type="time" id="saturdayVideoFrom" name="videoFrom[]" required disabled>
+                                            <input type="time" id="saturdayVideoTo" name="videoTo[]" required disabled>
+                                        </div>
+
+                                    </div>
+
+                                </div>
                             @else
+                                {{--                            voice working--}}
+                                <label>Voice Working hours</label>
                                 <div class="form-group">
                                     <div class="row">
                                         <div class="col-3">
@@ -464,6 +600,222 @@
 
                                     </div>
                                 </div>
+                                {{--                            video working--}}
+                                <label>Video Working hours</label>
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-3">
+                                            <label class="switch">
+
+                                                <input id="sunday" value="sunday" class="video-day-checkbox" type="checkbox"
+                                                       name="videoDays[]" {{ in_array('sunday', $videoDays) ? 'checked' : '' }}>
+                                                <span class="slider round"></span>
+                                            </label>
+                                            Sunday
+                                        </div>
+                                        <div class="col-6">
+
+                                            <input type="time" id="sundayVideoFrom" name="videoFrom[]" required
+                                                    {{ in_array('sunday', $videoDays)
+                                                        ? 'value=' .
+                                                            $videoAvailability->filter(function ($item) {
+                                                                    return $item->day == 'sunday';
+                                                                })->first()->from
+                                                        : 'disabled' }}>
+                                            <input type="time" id="sundayVideoTo" name="videoTo[]" required
+                                                    {{ in_array('sunday', $videoDays)
+                                                        ? 'value=' .
+                                                            $videoAvailability->filter(function ($item) {
+                                                                    return $item->day == 'sunday';
+                                                                })->first()->to
+                                                        : 'disabled' }}>
+                                        </div>
+
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-3">
+
+                                            <label class="switch">
+
+                                                <input id="monday" value="monday" class="video-day-checkbox" type="checkbox"
+                                                       name="videoDays[]" {{ in_array('monday', $videoDays) ? 'checked' : '' }}>
+                                                <span class="slider round"></span>
+                                            </label>
+                                            Monday
+                                        </div>
+                                        <div class="col-6">
+
+                                            <input type="time" id="mondayVideoFrom" name="videoFrom[]" required
+                                                    {{ in_array('monday', $videoDays)
+                                                        ? 'value=' .
+                                                            $videoAvailability->filter(function ($item) {
+                                                                    return $item->day == 'monday';
+                                                                })->first()->from
+                                                        : 'disabled' }}>
+                                            <input type="time" id="mondayVideoTo" name="videoTo[]" required
+                                                    {{ in_array('monday', $videoDays)
+                                                        ? 'value=' .
+                                                            $videoAvailability->filter(function ($item) {
+                                                                    return $item->day == 'monday';
+                                                                })->first()->to
+                                                        : 'disabled' }}>
+                                        </div>
+
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-3">
+
+                                            <label class="switch" class="row">
+
+                                                <input id="tuesday" value="tuesday" class="video-day-checkbox" type="checkbox"
+                                                       name="videoDays[]" {{ in_array('tuesday', $videoDays) ? 'checked' : '' }}>
+                                                <span class="slider round"></span>
+                                            </label>
+
+                                            Tuesday
+                                        </div>
+                                        <div class="col-6">
+
+                                            <input type="time" id="tuesdayVideoFrom" name="videoFrom[]" required
+                                                    {{ in_array('tuesday', $videoDays)
+                                                        ? 'value=' .
+                                                            $videoAvailability->filter(function ($item) {
+                                                                    return $item->day == 'tuesday';
+                                                                })->first()->from
+                                                        : 'disabled' }}>
+                                            <input type="time" id="tuesdayVideoTo" name="videoTo[]" required
+                                                    {{ in_array('tuesday', $videoDays)
+                                                        ? 'value=' .
+                                                            $videoAvailability->filter(function ($item) {
+                                                                    return $item->day == 'tuesday';
+                                                                })->first()->to
+                                                        : 'disabled' }}>
+                                        </div>
+
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-3">
+
+                                            <label class="switch">
+
+                                                <input id="wednesday" value="wednesday" class="video-day-checkbox"
+                                                       type="checkbox" name="videoDays[]"
+                                                        {{ in_array('wednesday', $videoDays) ? 'checked' : '' }}>
+                                                <span class="slider round"></span>
+                                            </label>
+                                            Wednesday
+                                        </div>
+                                        <div class="col-6">
+
+                                            <input type="time" id="wednesdayVideoFrom" name="videoFrom[]" required
+                                                    {{ in_array('wednesday', $videoDays)
+                                                        ? 'value=' .
+                                                            $videoAvailability->filter(function ($item) {
+                                                                    return $item->day == 'wednesday';
+                                                                })->first()->from
+                                                        : 'disabled' }}>
+                                            <input type="time" id="wednesdayVideoTo" name="videoTo[]" required
+                                                    {{ in_array('wednesday', $videoDays)
+                                                        ? 'value=' .
+                                                            $videoAvailability->filter(function ($item) {
+                                                                    return $item->day == 'wednesday';
+                                                                })->first()->to
+                                                        : 'disabled' }}>
+                                        </div>
+
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-3">
+
+                                            <label class="switch">
+
+                                                <input id="thursday" value="thursday" class="video-day-checkbox"
+                                                       type="checkbox" name="videoDays[]"
+                                                        {{ in_array('thursday', $videoDays) ? 'checked' : '' }}>
+                                                <span class="slider round"></span>
+                                            </label>
+                                            Thursday
+                                        </div>
+                                        <div class="col-6">
+                                            <input type="time" id="thursdayVideoFrom" name="videoFrom[]" required
+                                                    {{ in_array('thursday', $videoDays)
+                                                        ? 'value=' .
+                                                            $videoAvailability->filter(function ($item) {
+                                                                    return $item->day == 'thursday';
+                                                                })->first()->from
+                                                        : 'disabled' }}>
+                                            <input type="time" id="thursdayVideoTo" name="videoTo[]" required
+                                                    {{ in_array('thursday', $videoDays)
+                                                        ? 'value=' .
+                                                            $videoAvailability->filter(function ($item) {
+                                                                    return $item->day == 'thursday';
+                                                                })->first()->to
+                                                        : 'disabled' }}>
+                                        </div>
+
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-3">
+
+                                            <label class="switch">
+
+                                                <input id="friday" value="friday" class="video-day-checkbox" type="checkbox"
+                                                       name="videoDays[]" {{ in_array('friday', $videoDays) ? 'checked' : '' }}>
+                                                <span class="slider round"></span>
+                                            </label>
+                                            Friday
+                                        </div>
+                                        <div class="col-6">
+
+                                            <input type="time" id="fridayVideoFrom" name="videoFrom[]" required
+                                                    {{ in_array('friday', $videoDays)
+                                                        ? 'value=' .
+                                                            $videoAvailability->filter(function ($item) {
+                                                                    return $item->day == 'friday';
+                                                                })->first()->from
+                                                        : 'disabled' }}>
+                                            <input type="time" id="fridayVideoTo" name="videoTo[]" required
+                                                    {{ in_array('friday', $videoDays)
+                                                        ? 'value=' .
+                                                            $videoAvailability->filter(function ($item) {
+                                                                    return $item->day == 'friday';
+                                                                })->first()->to
+                                                        : 'disabled' }}>
+                                        </div>
+
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-3">
+
+                                            <label class="switch">
+
+                                                <input id="saturday" value="saturday" class="video-day-checkbox"
+                                                       type="checkbox" name="videoDays[]"
+                                                        {{ in_array('saturday', $videoDays) ? 'checked' : '' }}>
+                                                <span class="slider round"></span>
+                                            </label>
+                                            Saturday
+                                        </div>
+                                        <div class="col-6">
+
+                                            <input type="time" id="saturdayVideoFrom" name="videoFrom[]" required
+                                                    {{ in_array('saturday', $videoDays)
+                                                        ? 'value=' .
+                                                            $videoAvailability->filter(function ($item) {
+                                                                    return $item->day == 'saturday';
+                                                                })->first()->from
+                                                        : 'disabled' }}>
+                                            <input type="time" id="saturdayVideoTo" name="videoTo[]" required
+                                                    {{ in_array('saturday', $videoDays)
+                                                        ? 'value=' .
+                                                            $videoAvailability->filter(function ($item) {
+                                                                    return $item->day == 'saturday';
+                                                                })->first()->to
+                                                        : 'disabled' }}>
+                                        </div>
+
+                                    </div>
+                                </div>
                             @endif
 
                         </div>
@@ -485,6 +837,17 @@
             checkBoxs[i].addEventListener("click", function() {
                 document.getElementById(this.id + 'From').disabled = !this.checked;
                 document.getElementById(this.id + 'To').disabled = !this.checked;
+
+            });
+        }
+    </script>
+    <script type="text/javascript">
+        var checkBoxs = document.getElementsByClassName("video-day-checkbox")
+        var i = checkBoxs.length;
+        for (i = 0; i < checkBoxs.length; i++) {
+            checkBoxs[i].addEventListener("click", function() {
+                document.getElementById(this.id + 'VideoFrom').disabled = !this.checked;
+                document.getElementById(this.id + 'VideoTo').disabled = !this.checked;
 
             });
         }

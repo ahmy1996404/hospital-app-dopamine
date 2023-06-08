@@ -7834,3 +7834,6 @@ display: none;
                 height: 100%;
             }
         }
+.text-red-600 {
+  color: red;
+}

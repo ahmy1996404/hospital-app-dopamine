@@ -41,8 +41,9 @@
                                     <div class="col-lg-12 ">
                                         <div class="form-group">
                                             <x-jet-input id="name" class="form-control" type="text" name="name"
-                                                :value="old('name')" required autofocus autocomplete="name"
+                                                :value="old('name')"  autofocus autocomplete="name"
                                                 placeholder="Username" />
+                                            <x-jet-input-error for="name" class="mt-2" />
 
                                         </div>
                                     </div>
@@ -51,6 +52,8 @@
                                         <div class="form-group">
                                             <x-jet-input id="email" class="form-control" type="email" name="email"
                                                 :value="old('email')" required placeholder="Email" />
+                                            <x-jet-input-error for="email" class="mt-2" />
+
                                         </div>
                                     </div>
 
@@ -59,6 +62,8 @@
                                             <x-jet-input id="password" class="form-control" type="password"
                                                 name="password" required autocomplete="new-password"
                                                 placeholder="Password" />
+                                            <x-jet-input-error for="password" class="mt-2" />
+
                                         </div>
                                     </div>
                                     <div class="col-12">
@@ -66,6 +71,8 @@
                                             <x-jet-input id="password_confirmation" class="form-control" type="password"
                                                 name="password_confirmation" required autocomplete="new-password"
                                                 placeholder="Confirm Password" />
+                                            <x-jet-input-error for="password_confirmation" class="mt-2" />
+
                                         </div>
                                     </div>
                                     @if (Laravel\Jetstream\Jetstream::hasTermsAndPrivacyPolicyFeature())

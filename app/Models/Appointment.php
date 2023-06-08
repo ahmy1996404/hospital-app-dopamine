@@ -17,7 +17,9 @@ class Appointment extends Model
         'doctor_id',
         'user_id',
         'date',
+        'time',
         'status',
+        'type',
     ];
     /**
      * Relations

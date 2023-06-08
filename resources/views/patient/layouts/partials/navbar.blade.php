@@ -2,7 +2,18 @@
      <!-- Menu For Mobile Device -->
      <div class="mobile-nav">
          <a href="index.html" class="logo">
-             <img src="{{ asset(\App\Helpers\Utility::getValByName('logo')) }}" alt="Logo">
+             <div class="row" style="
+  margin-left: auto;
+  margin-right: auto;
+  width: 50%;">
+                 <img src="{{ asset(\App\Helpers\Utility::getValByName('logo')) }}" style="width:50px" width="50px"
+                     alt="Logo">
+
+             </div>
+             <div class="row">
+                 <h6>{{ \App\Helpers\Utility::getValByName('title_text') }}</h6>
+
+             </div>
          </a>
      </div>
      <!-- Menu For Desktop Device -->
@@ -10,7 +21,20 @@
          <div class="container">
              <nav class="navbar navbar-expand-md navbar-light ">
                  <a class="navbar-brand" href="index.html">
-                     <img src="{{ asset(\App\Helpers\Utility::getValByName('logo')) }}" alt="Logo">
+                     <div class="row text-center" style="
+  margin-left: auto;
+  margin-right: auto;
+  width: 50%;">
+                         <img src="{{ asset(\App\Helpers\Utility::getValByName('logo')) }}" style="width:50px"
+                             width="50px" alt="Logo">
+
+                     </div>
+                     <div class="row text-center">
+                         <h6>{{ \App\Helpers\Utility::getValByName('title_text') }}</h6>
+
+                     </div>
+                     <br>
+
                  </a>
 
                  <div class="collapse navbar-collapse mean-menu" id="navbarSupportedContent">
@@ -28,26 +52,25 @@
                                  Doctors
                              </a>
                          </li>
+
                          <li class="nav-item">
-                             <a href="{{ route('patient.doctor.appointoment') }}"
-                                 class="nav-link {{ checkRoute('appointment*', 'route', 'all') }}">
-                                 Appointment
-                             </a>
-                         </li>
-                         <li class="nav-item">
-                             <a href="about.html" class="nav-link">
+
+                             <a href="{{ route('patient.about') }}"
+                                 class="nav-link {{ checkRoute('about*', 'route', 'all') }}">
                                  About
                              </a>
                          </li>
                          <li class="nav-item">
-                             <a href="#" class="nav-link">
+                             <a href="{{ route('patient.blog.index') }}"
+                                 class="nav-link {{ checkRoute('blog*', 'route', 'all') }}">
                                  Blog
                              </a>
 
                          </li>
 
                          <li class="nav-item">
-                             <a href="contact.html" class="nav-link">
+                             <a href="{{ route('patient.contact') }}"
+                                 class="nav-link {{ checkRoute('contact*', 'route', 'all') }}">
                                  Contact
                              </a>
                          </li>
@@ -102,9 +125,9 @@
                                              <a class="dropdown-item" href="{{ route('user.report.view') }}"><i
                                                      class="me-50" data-feather="check-square"></i>
                                                  Reports</a>
-                                            
-                                             <a class="dropdown-item" href="{{ route('patient.chat.index') }}"><i class="me-50"
-                                                     data-feather="message-square"></i> Chats</a>
+
+                                             <a class="dropdown-item" href="{{ route('patient.chat.index') }}"><i
+                                                     class="me-50" data-feather="message-square"></i> Chats</a>
                                              <a class="dropdown-item" href="page-faq.html"> <i class="me-50"
                                                      data-feather="help-circle"></i> FAQ</a>
                                              <a class="dropdown-item" href="{{ route('user.logout') }} "> Logout</a>

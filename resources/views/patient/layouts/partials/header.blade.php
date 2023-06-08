@@ -2,25 +2,7 @@
     <div class="container">
         <div class="row align-items-center">
             <div class="col-lg-8 col-md-8">
-                <div class="header-left">
-                    <div class="header-left-card">
-                        <ul>
-                            <li>
-                                <div class="head-icon">
-                                    <i class='bx bx-mail-send'></i>
-                                </div>
-                                <a href="mailto:hello@medizo.com">hello@medizo.com</a>
-                            </li>
-
-                            <li>
-                                <div class="head-icon">
-                                    <i class='bx bx-time-five'></i>
-                                </div>
-                                <a href="#">Mon - Sat: 8.00 am - 7.00 pm</a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
+                 
             </div>
 
             <div class="col-lg-4 col-md-4">
