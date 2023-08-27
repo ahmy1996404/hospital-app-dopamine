@@ -23,7 +23,8 @@ class ArticleRequest extends FormRequest
             'header' => ['required', 'string', 'min:2', 'max:255'],
             'content' => ['required', 'string', 'min:2'],
             'category_id' => ['required'],
-
+            'thumbnail_img' => ['required'],
+            'header_img' => ['required'],
 
 
 
@@ -37,7 +38,8 @@ class ArticleRequest extends FormRequest
             'header' => ['required', 'string', 'min:2', 'max:255'],
             'content' => ['required', 'string', 'min:2'],
             'category_id' => ['required'],
-
+            'thumbnail_img' => ['required'],
+            'header_img' => ['required'],
         ];
     }
     /**

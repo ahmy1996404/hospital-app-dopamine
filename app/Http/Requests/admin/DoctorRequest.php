@@ -31,7 +31,11 @@ class DoctorRequest extends FormRequest
             "from.*"    => "required",
             "to"    => "required|array",
             "to.*"    => "required",
-
+            "videoDays"    => "required|array|min:1",
+            "videoFrom"    => "required|array",
+            "videoFrom.*"    => "required",
+            "videoTo"    => "required|array",
+            "videoTo.*"    => "required",
 
         ];
     }
@@ -50,7 +54,11 @@ class DoctorRequest extends FormRequest
             "from.*"    => "required",
             "to"    => "required|array",
             "to.*"    => "required",
-
+            "videoDays"    => "required|array|min:1",
+            "videoFrom"    => "required|array",
+            "videoFrom.*"    => "required",
+            "videoTo"    => "required|array",
+            "videoTo.*"    => "required",
 
         ];
     }

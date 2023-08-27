@@ -56,7 +56,9 @@ class DoctorController extends Controller
      */
     public function store(DoctorRequest $request)
     {
+
         try {
+
             DB::beginTransaction();
             $data = $request->except(['is_active', 'avatar', 'user_type', 'speciality_id', 'doctor_info']);
             $data['user_type'] = 'doctor';
